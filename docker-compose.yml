@@ -31,7 +31,7 @@ services:
       VIRTUAL_HOST: "${APP_DOMAIN:-wp.test}"
     env_file: .env
 
-  wp-cli:
+  cli:
     build:
       context: .
       dockerfile: Dockerfile

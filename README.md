@@ -1,2 +1,2 @@
 docker-compose up -d
-docker-compose run --rm wp-cli install-wp
+docker-compose run --rm cli install-wp
