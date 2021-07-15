@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  db:
+    image: mariadb:10
+    volumes:
+      - "db_data:/var/lib/mysql:rw"
+    restart: unless-stopped
+    networks:
+      - "back"
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    volumes:
+      - "wordpress_data:/var/www/html:rw"
+      - ".:/var/www/html/wp-content/plugins/my-plugin:ro"
+    ports:
+      - "${APP_PORT:-8000}:80"
+    restart: unless-stopped
+    networks:
+      - "front"
+      - "back"
+    environment:
+      VIRTUAL_HOST: "${APP_DOMAIN:-wp.test}"
+    env_file: .env
+
+  wp-cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    networks:
+      - "back"
+    volumes:
+      - "wordpress_data:/var/www/html:rw"
+      - ".:/var/www/html/wp-content/plugins/my-plugin:ro"
+    environment:
+      VIRTUAL_HOST: "${APP_DOMAIN:-wp.test}"
+    env_file: .env
+volumes:
+  db_data: {}
+  wordpress_data: {}
+
+networks:
+  front: {}
+  back: {}
