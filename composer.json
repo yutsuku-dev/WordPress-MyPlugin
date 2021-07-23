@@ -1,5 +1,17 @@
 {
+    "autoload": {
+        "psr-4": {
+            "Yutsuku\\": "src/"
+        }
+    },
     "require-dev": {
         "inpsyde/php-coding-standards": "^1@dev"
+    },
+    "require": {
+        "php": ">=7.4",
+        "symfony/http-client": "^5.3",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "nyholm/psr7": "^1.4"
     }
 }
