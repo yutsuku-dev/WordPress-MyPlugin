@@ -27,5 +27,8 @@ wp option set home http://$url --allow-root
 # Update permalink structure.
 wp option update permalink_structure "/%year%/%monthnum%/%postname%/" --skip-themes --skip-plugins --allow-root
 
+# Install script dependencies
+composer install
+
 # Activate plugin.
 wp plugin activate my-plugin --allow-root

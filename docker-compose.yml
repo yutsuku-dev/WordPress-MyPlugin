@@ -47,6 +47,7 @@ services:
     environment:
       VIRTUAL_HOST: "${APP_DOMAIN:-wp.test}"
     env_file: .env
+    command: ["wait-for-db", "db", "install-wp"]
 volumes:
   db_data: {}
   wordpress_data: {}
