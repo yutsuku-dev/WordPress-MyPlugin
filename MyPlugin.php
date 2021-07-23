@@ -1,25 +1,26 @@
 <?php
-/**
+
+declare(strict_types=1);
+
+/*
  * MyPlugin
  *
- * @package           PluginPackage
+ * @package           MyPlugin
  * @author            Dawid "moh" Odzienkowski
  *
  * @wordpress-plugin
  * Plugin Name:       MyPlugin
- * Plugin URI:        https://example.com/plugin-name
- * Description:       Description of the plugin.
+ * Description:       Sample integration with jsonplaceholder.typicode.com.
  * Version:           0.0.1
  * Requires at least: 5.7
  * Requires PHP:      7.4
- * Author:            Your Name
- * Author URI:        https://example.com
- * Text Domain:       plugin-slug
- * License:           GPL v2 or later
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Author:            Dawid "moh" Odzienkowski
+ * Author URI:        https://yutsuku.net
+ * Text Domain:       my-lovely-users-table
  */
 
-class MyPlugin
-{
-    
-}
+require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+
+use \Yutsuku\WordPress\MyPlugin;
+
+$plugin = new MyPlugin(__FILE__);

@@ -1,0 +1,29 @@
+#my-plugin-vievport {
+    margin: 0 1vh;
+}
+#my-plugin-vievport .grid {
+    display: grid;
+    grid-template-columns: 50fr 50fr;
+    grid-gap: 5px;
+}
+
+#my-plugin-vievport #my-plugin-user-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: pre-wrap;
+}
+
+#my-plugin-vievport #my-plugin-user-view p {
+    opacity: 0.5;
+}
+
+#my-plugin-vievport #my-plugin-user-view .object, 
+#my-plugin-vievport #my-plugin-user-view .array {
+    margin-left: 2em;
+}
+#my-plugin-vievport #my-plugin-user-view .array {
+    max-height: 20vmin;
+    overflow: auto;
+    border: var(--pullquote--border-width) solid var(--global--color-secondary);
+}
