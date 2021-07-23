@@ -28,7 +28,13 @@ class Transient implements TransientInterface
 
     public function fetch(string $key): ?array
     {
-        return get_transient($key);
+        $value = get_transient($key);
+
+        if ($value === false) {
+            return null;
+        }
+
+        return $value;
     }
 
     public function delete(string $key): void

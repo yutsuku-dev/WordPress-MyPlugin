@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yutsuku\WordPress\Models\JsonPlaceHolder;
 
-use Yutsuku\WordPress\Api\StringPropertyFromArrayTrait;
+use Yutsuku\WordPress\Models\StringPropertyFromArrayTrait;
 
 class Post
 {

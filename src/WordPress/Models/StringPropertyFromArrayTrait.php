@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yutsuku\WordPress\Api;
+namespace Yutsuku\WordPress\Models;
 
 use Yutsuku\WordPress\Fetcher\FetcherInterface;
 

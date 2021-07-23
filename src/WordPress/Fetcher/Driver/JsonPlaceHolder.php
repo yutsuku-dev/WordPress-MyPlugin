@@ -49,7 +49,7 @@ class JsonPlaceHolder implements FetcherInterface, JsonPlaceHolderUserInterface
 
     public function users(): Users
     {
-        if (empty($this->usersCollection)) {
+        if (iterator_count($this->usersCollection) === 0) {
             $this->fetchAll();
         }
         return $this->usersCollection;
@@ -62,7 +62,7 @@ class JsonPlaceHolder implements FetcherInterface, JsonPlaceHolderUserInterface
         try {
             $data = $this->cache->fetch($key);
 
-            if ($data === false) {
+            if (!$data) {
                 $response = $this->httpClient->sendRequest($request);
                 $data = json_decode($response->getBody()->getContents(), true);
 
