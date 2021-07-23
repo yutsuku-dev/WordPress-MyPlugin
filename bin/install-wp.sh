@@ -18,13 +18,14 @@ wp core install \
   --admin_password="wordpress" \
   --admin_email="admin@example.com" \
   --url=$url \
-  --skip-email
+  --skip-email \
+  --allow-root
 
-wp option set siteurl http://$url
-wp option set home http://$url
+wp option set siteurl http://$url --allow-root
+wp option set home http://$url --allow-root
 
 # Update permalink structure.
-wp option update permalink_structure "/%year%/%monthnum%/%postname%/" --skip-themes --skip-plugins
+wp option update permalink_structure "/%year%/%monthnum%/%postname%/" --skip-themes --skip-plugins --allow-root
 
 # Activate plugin.
-wp plugin activate my-plugin
+wp plugin activate my-plugin --allow-root
