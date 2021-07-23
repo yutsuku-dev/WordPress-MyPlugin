@@ -27,3 +27,8 @@
     overflow: auto;
     border: var(--pullquote--border-width) solid var(--global--color-secondary);
 }
+
+#my-plugin-vievport [data-myplugin-row].active {
+    background: var(--global--color-light-gray);
+    border: var(--pullquote--border-width) solid var(--global--color-secondary);
+}

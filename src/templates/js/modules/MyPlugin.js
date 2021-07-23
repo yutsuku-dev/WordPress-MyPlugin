@@ -58,7 +58,7 @@ class MyPlugin {
             ${users.map(entry => {
                 const endpoint_entry = `${this.slug}${entry.id}/`;
                 return `
-                <tr>
+                <tr data-myplugin-row data-id="${entry.id}">
                     <td><a data-myplugin-link data-id="${entry.id}" href="${endpoint_entry}">${entry.id}</a></td>
                     <td><a data-myplugin-link data-id="${entry.id}" href="${endpoint_entry}">${entry.name}</a></td>
                     <td><a data-myplugin-link data-id="${entry.id}" href="${endpoint_entry}">${entry.username}</a></td>
@@ -67,6 +67,17 @@ class MyPlugin {
             }).join('')}
         </table>
         `;
+    }
+
+    /**
+     * @param {Number} id 
+     */
+    markActiveRow(id) {
+        const rows = document.querySelectorAll(`[data-myplugin-row]`);
+        const active_row = document.querySelector(`[data-myplugin-row][data-id="${id}"]`);
+
+        rows.forEach(element => element.classList.remove('active'));
+        active_row.classList.add('active');
     }
 
     /**
@@ -81,7 +92,9 @@ class MyPlugin {
                     '',
                     this.baseUrl + event.target.dataset.id + '/'
                 );
-                
+
+                this.markActiveRow(event.target.dataset.id);
+
                 this.render_user(null, true);
                 const details = await this.user(event.target.dataset.id);
                 this.render_user(details);
@@ -113,14 +126,14 @@ class MyPlugin {
     }
 
     async render() {
-        const result = window.location.pathname.match(`${this.slug}(?<id>[0-9]+)`);
+        await this.render_users();
 
+        const result = window.location.pathname.match(`${this.slug}(?<id>[0-9]+)`);
         if (result?.groups?.id) {
             const user = await this.user(result.groups.id);
+            this.markActiveRow(result.groups.id);
             this.render_user(user);
         }
-
-        this.render_users();
     }
 }
 
