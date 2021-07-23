@@ -9,7 +9,7 @@ class Geo
     public float $lat;
     public float $lng;
 
-    public function __construct($args)
+    public function __construct(?array $args)
     {
         if (is_array($args)) {
             $this->lat = (float) $args['lat'];
@@ -17,7 +17,7 @@ class Geo
         }
     }
 
-    public static function fromArray(array $geo)
+    public static function fromArray(array $geo): self
     {
         return new self($geo);
     }

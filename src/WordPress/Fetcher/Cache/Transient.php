@@ -6,11 +6,16 @@ namespace Yutsuku\WordPress\Fetcher\Cache;
 
 class Transient implements TransientInterface
 {
-    private int $expiration = 60 * 60; // seconds
+    private int $expiration; // seconds
+
+    public function __construct(int $expiration = 60 * 60)
+    {
+        $this->expiration = $expiration;
+    }
     /**
      * @throws TransientException
      */
-    public function store(string $key, $data, int $context): void
+    public function store(string $key, array $data, int $context): void
     {
         // warn early before WP silent fail
         // https://developer.wordpress.org/reference/functions/set_transient/#more-information
@@ -21,7 +26,7 @@ class Transient implements TransientInterface
         set_transient($key, $data, $context);
     }
 
-    public function fetch(string $key)
+    public function fetch(string $key): ?array
     {
         return get_transient($key);
     }
@@ -34,10 +39,5 @@ class Transient implements TransientInterface
     public function expiries(): int
     {
         return $this->expiration;
-    }
-
-    public function setExpiration(int $value)
-    {
-        $this->expiration = $value;
     }
 }

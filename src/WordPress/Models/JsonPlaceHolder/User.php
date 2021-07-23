@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Yutsuku\WordPress\Models\JsonPlaceHolder;
 
+use Yutsuku\WordPress\Api\StringPropertyFromArrayTrait;
+
 class User
 {
+    use StringPropertyFromArrayTrait;
+
     public int $id;
     public string $name;
     public string $phone;
@@ -13,14 +17,10 @@ class User
     public Company $company;
     public Address $address;
 
-    public function __construct($args)
+    public function __construct(?array $args)
     {
         if (is_array($args)) {
-            foreach ($args as $key => $value) {
-                if (is_string($value)) {
-                    $this->{$key} = $value;
-                }
-            }
+            $this->stringPropertiesFromArray($args);
 
             $this->id = $args['id'];
             $this->company = Company::fromArray($args['company']);
@@ -28,7 +28,7 @@ class User
         }
     }
 
-    public static function fromArray(array $user)
+    public static function fromArray(array $user): self
     {
         return new self($user);
     }

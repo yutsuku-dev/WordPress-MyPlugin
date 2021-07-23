@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace Yutsuku\WordPress\Models\JsonPlaceHolder;
 
+use Yutsuku\WordPress\Api\StringPropertyFromArrayTrait;
+
 class Address
 {
+    use StringPropertyFromArrayTrait;
+
     public string $street;
     public string $suite;
     public string $city;
     public string $zipcode;
     public Geo $geo;
 
-    public function __construct($args)
+    public function __construct(?array $args)
     {
         if (is_array($args)) {
-            foreach ($args as $key => $value) {
-                if (is_string($value)) {
-                    $this->{$key} = $value;
-                }
-            }
+            $this->stringPropertiesFromArray($args);
+
             $this->geo = Geo::fromArray($args['geo']);
         }
     }
 
-    public static function fromArray(array $address)
+    public static function fromArray(array $address): self
     {
         return new self($address);
     }

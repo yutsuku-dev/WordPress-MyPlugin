@@ -78,21 +78,26 @@ abstract class PluginBase
         });
 
         add_action('rest_api_init', function () {
-            $this->usersController->register_routes();
+            $this->usersController->registerRoutes();
         });
     }
 
     protected function addFilters()
     {
-        add_filter('query_vars', static function ($query_vars) {
-            $query_vars[] = rawurlencode(Slug::NAME);
-            return $query_vars;
+        add_filter('query_vars', static function ($vars) {
+            $vars[] = rawurlencode(Slug::NAME);
+            return $vars;
         });
 
         add_filter('script_loader_tag', function ($tag, $handle, $src) {
             if ($handle === ($this->metadata['Plugin Name'] ?? __NAMESPACE__)) {
+                // Currently there is no other way to add attribute to script tag
+                // which is required when loading ECMAScript modules
+                // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
                 return '<script type="module" src="' . esc_url($src) . '"></script>';
             }
+
+            return $tag;
         }, 10, 3);
 
         add_filter('template_include', function ($template) {

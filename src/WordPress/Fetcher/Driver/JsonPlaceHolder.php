@@ -31,15 +31,15 @@ class JsonPlaceHolder implements FetcherInterface, JsonPlaceHolderUserInterface
     private ClientInterface $httpClient;
     private RequestFactoryInterface $requestFactory;
     private TransientInterface $cache;
-    private Users $users;
+    private Users $usersCollection;
     private bool $cached = true;
 
-    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, TransientInterface $cache, Users $users)
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, TransientInterface $cache, Users $usersCollection)
     {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->cache = $cache;
-        $this->users = $users;
+        $this->usersCollection = $usersCollection;
     }
 
     public function isCache(): bool
@@ -47,32 +47,35 @@ class JsonPlaceHolder implements FetcherInterface, JsonPlaceHolderUserInterface
         return $this->cached;
     }
 
-    public function getAll(): Users
+    public function users(): Users
     {
-        return $this->users;
+        if (empty($this->usersCollection)) {
+            $this->fetchAll();
+        }
+        return $this->usersCollection;
     }
 
     protected function fetchWithCache(RequestInterface $request): ?array
     {
-        $cache_key = __METHOD__ . $request->getRequestTarget();
+        $key = __METHOD__ . $request->getRequestTarget();
 
         try {
-            $data = $this->cache->fetch($cache_key);
+            $data = $this->cache->fetch($key);
 
             if ($data === false) {
                 $response = $this->httpClient->sendRequest($request);
                 $data = json_decode($response->getBody()->getContents(), true);
 
                 $this->cached = false;
-                $this->cache->store($cache_key, $data, $this->cache->expiries());
+                $this->cache->store($key, $data, $this->cache->expiries());
             }
 
             return $data;
-        } catch (ClientExceptionInterface $e) {
+        } catch (ClientExceptionInterface $exception) {
         }
     }
 
-    public function fetchById(int $id): ?User
+    public function user(int $id): ?User
     {
         $request = $this->requestFactory->createRequest(
             'GET',
@@ -96,7 +99,7 @@ class JsonPlaceHolder implements FetcherInterface, JsonPlaceHolderUserInterface
 
         if ($data) {
             foreach ($data as $entry) {
-                $this->users->add(User::fromArray($entry));
+                $this->usersCollection->add(User::fromArray($entry));
             }
         }
     }

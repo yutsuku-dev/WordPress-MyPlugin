@@ -6,7 +6,7 @@ namespace Yutsuku\WordPress\Api;
 
 use Yutsuku\WordPress\Fetcher\FetcherInterface;
 
-class UsersController extends \WP_REST_Controller
+class UsersController
 {
     private FetcherInterface $fetcher;
 
@@ -17,7 +17,7 @@ class UsersController extends \WP_REST_Controller
         $this->rest_base = 'users';
     }
 
-    public function register_routes()
+    public function registerRoutes()
     {
         register_rest_route($this->namespace, $this->rest_base, [
             [
@@ -37,8 +37,7 @@ class UsersController extends \WP_REST_Controller
 
     public function users(\WP_REST_Request $request): \WP_REST_Response
     {
-        $this->fetcher->fetchAll();
-        $data = $this->fetcher->getAll();
+        $data = $this->fetcher->users();
 
         return new \WP_REST_Response($data, 200);
     }
@@ -46,7 +45,7 @@ class UsersController extends \WP_REST_Controller
     public function user(\WP_REST_Request $request): \WP_REST_Response
     {
         $id = (int) $request->get_param('id');
-        $user = $this->fetcher->fetchById($id);
+        $user = $this->fetcher->user($id);
         $userDetails = $this->fetcher->userDetails($user);
 
         $data = ['user' => $user, 'details' => $userDetails];

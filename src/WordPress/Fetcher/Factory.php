@@ -11,12 +11,12 @@ use Yutsuku\WordPress\Models\JsonPlaceHolder\Users;
 
 class Factory
 {
-    public static function build()
+    public static function build(): FetcherInterface
     {
-        return self::BuildJsonPlaceHolder();
+        return self::buildJsonPlaceHolder();
     }
 
-    public static function BuildJsonPlaceHolder(): FetcherInterface
+    public static function buildJsonPlaceHolder(): FetcherInterface
     {
         $httpClient = new Psr18Client();
         $requestFactory = new Psr18Client();
