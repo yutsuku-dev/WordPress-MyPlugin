@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yutsuku\WordPress\Models\JsonPlaceHolder;
 
-use \Yutsuku\WordPress\Models\Collection;
+use Yutsuku\WordPress\Models\Collection;
 
 class Users extends Collection implements UsersInterface
 {

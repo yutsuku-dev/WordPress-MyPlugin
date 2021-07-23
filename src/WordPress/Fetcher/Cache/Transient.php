@@ -10,11 +10,11 @@ class Transient implements TransientInterface
     /**
      * @throws TransientException
      */
-    public function store(string $key, $data, int $context) : void
+    public function store(string $key, $data, int $context): void
     {
         // warn early before WP silent fail
         // https://developer.wordpress.org/reference/functions/set_transient/#more-information
-        if (mb_strlen($key) > 172 ) {
+        if (mb_strlen($key) > 172) {
             throw new TransientException('Key must be 172 characters or fewer in length');
         }
 
@@ -26,7 +26,7 @@ class Transient implements TransientInterface
         return get_transient($key);
     }
 
-    public function delete(string $key) : void
+    public function delete(string $key): void
     {
         delete_transient($key);
     }

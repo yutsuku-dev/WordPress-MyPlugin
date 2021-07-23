@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yutsuku\WordPress\Models\JsonPlaceHolder;
 
-Interface AlbumsInterface extends \Iterator
+interface AlbumsInterface extends \Iterator
 {
     public function add(Album $album);
 }

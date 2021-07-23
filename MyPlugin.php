@@ -19,8 +19,8 @@ declare(strict_types=1);
  * Text Domain:       my-lovely-users-table
  */
 
-require plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
+require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 
-use \Yutsuku\WordPress\MyPlugin;
+use Yutsuku\WordPress\MyPlugin;
 
 $plugin = new MyPlugin(__FILE__);

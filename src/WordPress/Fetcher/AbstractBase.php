@@ -8,15 +8,15 @@ abstract class AbstractBase
 {
     private array $entries = [];
 
-    public function add(array $entry) : void
+    public function add(array $entry): void
     {
         $this->entries[] = $entry;
     }
 
-    public function getAll() : array
+    public function getAll(): array
     {
         return $this->entries;
     }
 
-    abstract public function fetchAll() : void;
+    abstract public function fetchAll(): void;
 }

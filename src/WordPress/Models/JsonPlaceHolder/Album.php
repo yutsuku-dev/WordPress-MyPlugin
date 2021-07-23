@@ -13,7 +13,7 @@ class Album
     public function __construct($args)
     {
         if (is_array($args)) {
-            foreach($args as $key => $value) {
+            foreach ($args as $key => $value) {
                 if (is_string($value)) {
                     $this->{$key} = $value;
                 }

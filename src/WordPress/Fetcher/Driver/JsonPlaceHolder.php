@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Yutsuku\WordPress\Fetcher\Driver;
 
-use \Yutsuku\WordPress\Fetcher\AbstractBase;
-
-use \Psr\Http\Client\ClientInterface;
-use \Psr\Http\Client\ClientExceptionInterface;
-use \Psr\Http\Message\RequestInterface;
-use \Psr\Http\Message\RequestFactoryInterface;
+use Yutsuku\WordPress\Fetcher\AbstractBase;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\RequestFactoryInterface;
 use Yutsuku\WordPress\Fetcher\Cache\TransientInterface;
 use Yutsuku\WordPress\Fetcher\FetcherInterface;
 use Yutsuku\WordPress\Fetcher\JsonPlaceHolderUserInterface;
@@ -168,7 +167,7 @@ class JsonPlaceHolder implements FetcherInterface, JsonPlaceHolderUserInterface
         return [
             'todos' => $todos,
             'posts' => $posts,
-            'albums' => $albums
+            'albums' => $albums,
         ];
     }
 }

@@ -7,11 +7,11 @@ namespace Yutsuku\WordPress\Fetcher;
 use Yutsuku\WordPress\Models\JsonPlaceHolder\AlbumsInterface;
 use Yutsuku\WordPress\Models\JsonPlaceHolder\TodosInterface;
 use Yutsuku\WordPress\Models\JsonPlaceHolder\PostsInterface;
-use \Yutsuku\WordPress\Models\JsonPlaceHolder\User;
+use Yutsuku\WordPress\Models\JsonPlaceHolder\User;
 
-Interface JsonPlaceHolderUserInterface
+interface JsonPlaceHolderUserInterface
 {
-    public function albums(User $user) : AlbumsInterface;
-    public function todos(User $user) : TodosInterface;
-    public function posts(User $user) : PostsInterface;
+    public function albums(User $user): AlbumsInterface;
+    public function todos(User $user): TodosInterface;
+    public function posts(User $user): PostsInterface;
 }

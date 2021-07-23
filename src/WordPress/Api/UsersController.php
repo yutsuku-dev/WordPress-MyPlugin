@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yutsuku\WordPress\Api;
 
-use \Yutsuku\WordPress\Fetcher\FetcherInterface;
+use Yutsuku\WordPress\Fetcher\FetcherInterface;
 
 class UsersController extends \WP_REST_Controller
 {
@@ -21,21 +21,21 @@ class UsersController extends \WP_REST_Controller
     {
         register_rest_route($this->namespace, $this->rest_base, [
             [
-                'methods'  => \WP_REST_Server::READABLE,
+                'methods' => \WP_REST_Server::READABLE,
                 'callback' => [$this, 'users'],
-                'permission_callback' => '__return_true'
-            ]
+                'permission_callback' => '__return_true',
+            ],
         ]);
         register_rest_route($this->namespace, $this->rest_base . '/(?P<id>[\d]+)', [
             [
-                'methods'  => \WP_REST_Server::READABLE,
+                'methods' => \WP_REST_Server::READABLE,
                 'callback' => [$this, 'user'],
-                'permission_callback' => '__return_true'
-            ]
+                'permission_callback' => '__return_true',
+            ],
         ]);
     }
 
-    public function users(\WP_REST_Request $request) : \WP_REST_Response
+    public function users(\WP_REST_Request $request): \WP_REST_Response
     {
         $this->fetcher->fetchAll();
         $data = $this->fetcher->getAll();
@@ -43,7 +43,7 @@ class UsersController extends \WP_REST_Controller
         return new \WP_REST_Response($data, 200);
     }
 
-    public function user(\WP_REST_Request $request) : \WP_REST_Response
+    public function user(\WP_REST_Request $request): \WP_REST_Response
     {
         $id = (int) $request->get_param('id');
         $user = $this->fetcher->fetchById($id);

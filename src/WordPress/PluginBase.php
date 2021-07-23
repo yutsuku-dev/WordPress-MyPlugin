@@ -25,7 +25,7 @@ abstract class PluginBase
 
     protected function enable()
     {
-        register_activation_hook(__FILE__, function () {
+        register_activation_hook(__FILE__, static function () {
             add_rewrite_endpoint(Slug::NAME, EP_ROOT);
             flush_rewrite_rules();
         });
@@ -33,7 +33,6 @@ abstract class PluginBase
 
     protected function disable()
     {
-
     }
 
     protected function populateMetadata()
@@ -61,9 +60,11 @@ abstract class PluginBase
         add_action('init', function () {
             add_rewrite_rule(
                 Slug::NAME .
-                '/?([0-9]+)?/?$', 'index.php?' .
+                '/?([0-9]+)?/?$',
+                'index.php?' .
                 rawurlencode(Slug::NAME) .
-                '=1&id=$matches[1]', 'top'
+                '=1&id=$matches[1]',
+                'top'
             );
             flush_rewrite_rules();
 
@@ -79,13 +80,11 @@ abstract class PluginBase
         add_action('rest_api_init', function () {
             $this->usersController->register_routes();
         });
-
-
     }
 
     protected function addFilters()
     {
-        add_filter('query_vars', function ($query_vars) {
+        add_filter('query_vars', static function ($query_vars) {
             $query_vars[] = rawurlencode(Slug::NAME);
             return $query_vars;
         });
