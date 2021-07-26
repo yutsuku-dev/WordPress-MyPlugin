@@ -5,7 +5,9 @@
         }
     },
     "require-dev": {
-        "inpsyde/php-coding-standards": "^1@dev"
+        "inpsyde/php-coding-standards": "^1@dev",
+        "brain/monkey": "2.*",
+        "phpunit/phpunit": "^9"
     },
     "require": {
         "php": ">=7.4",
