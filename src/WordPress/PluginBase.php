@@ -11,6 +11,8 @@ abstract class PluginBase
     protected string $pluginRootFile;
     /** @see https://developer.wordpress.org/reference/functions/get_plugin_data/ */
     protected array $metadata;
+    /** where from user-provided files will be loaded, if any. Defaults to `Yutsuku/WordPress/MyPlugin` */
+    protected string $userTemplateBasedir = 'Yutsuku/WordPress/MyPlugin';
 
     public function __construct(string $pluginRootFile)
     {
@@ -55,6 +57,69 @@ abstract class PluginBase
         ]);
     }
 
+    protected function metadataHandle(): string
+    {
+        return $this->metadata['Plugin Name'] ?? __NAMESPACE__;
+    }
+
+    protected function metadataVersion(): string
+    {
+        return $this->metadata['Version'] ?? '1.0';
+    }
+
+    protected function resourceJsPath(): string
+    {
+        $file = get_template_directory() .
+            $this->userTemplateBasedir .
+            '/js/main.js';
+
+        set_error_handler(function () {
+        });
+
+        if (file_exists($file)) {
+            restore_error_handler();
+
+            return $file;
+        }
+
+        restore_error_handler();
+
+        return plugin_dir_url($this->pluginRootFile) .
+            'src/templates/js/main.js';
+    }
+
+    protected function resourceCssPath(): string
+    {
+        $file = get_template_directory() .
+            $this->userTemplateBasedir .
+            '/css/main.css';
+
+        set_error_handler(function () {
+        });
+
+        if (file_exists($file)) {
+            restore_error_handler();
+
+            return $file;
+        }
+
+        restore_error_handler();
+
+        return plugin_dir_url($this->pluginRootFile) .
+            'src/templates/css/main.css';
+    }
+
+    protected function resourceTemplatePath(): string
+    {
+        $template = locate_template($this->userTemplateBasedir . '/index.php');
+
+        if (!$template) {
+            $template = dirname($this->pluginRootFile) . '/src/templates/index.php';
+        }
+
+        return $template;
+    }
+
     protected function addActions()
     {
         add_action('init', function () {
@@ -69,10 +134,10 @@ abstract class PluginBase
             flush_rewrite_rules();
 
             wp_register_script(
-                ($this->metadata['Plugin Name'] ?? __NAMESPACE__),
-                plugin_dir_url($this->pluginRootFile) . 'src/templates/js/main.js',
+                $this->metadataHandle(),
+                $this->resourceJsPath(),
                 [],
-                ($this->metadata['Version'] ?? '1.0'),
+                $this->metadataVersion(),
                 true
             );
         });
@@ -90,7 +155,7 @@ abstract class PluginBase
         });
 
         add_filter('script_loader_tag', function ($tag, $handle, $src) {
-            if ($handle === ($this->metadata['Plugin Name'] ?? __NAMESPACE__)) {
+            if ($handle === $this->metadataHandle()) {
                 // Currently there is no other way to add attribute to script tag
                 // which is required when loading ECMAScript modules
                 // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript
@@ -107,27 +172,21 @@ abstract class PluginBase
 
             add_action('wp_enqueue_scripts', function () {
                 wp_enqueue_script(
-                    ($this->metadata['Plugin Name'] ?? __NAMESPACE__),
-                    plugin_dir_url($this->pluginRootFile) . 'src/templates/js/main.js',
+                    $this->metadataHandle(),
+                    $this->resourceJsPath(),
                     [],
-                    ($this->metadata['Version'] ?? '1.0'),
+                    $this->metadataVersion(),
                     true
                 );
                 wp_enqueue_style(
-                    ($this->metadata['Plugin Name'] ?? __NAMESPACE__),
-                    plugin_dir_url($this->pluginRootFile) . 'src/templates/css/main.css',
+                    $this->metadataHandle(),
+                    $this->resourceCssPath(),
                     [],
-                    ($this->metadata['Version'] ?? '1.0')
+                    $this->metadataVersion()
                 );
             });
 
-            $template = locate_template('Yutsuku/WordPress/MyPlugin/index.php');
-
-            if (!$template) {
-                $template = dirname($this->pluginRootFile) . '/src/templates/index.php';
-            }
-
-            return $template;
+            return $this->resourceTemplatePath();
         });
     }
 
