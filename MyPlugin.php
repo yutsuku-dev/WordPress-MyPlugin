@@ -17,6 +17,8 @@ declare(strict_types=1);
  * Author:            Dawid "moh" Odzienkowski
  * Author URI:        https://yutsuku.net
  * Text Domain:       my-lovely-users-table
+ * License:           GNU GPLv2
+ * License URI:       https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
 require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
