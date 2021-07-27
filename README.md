@@ -12,6 +12,7 @@ how to deploy the project on a live system.
 
 # Installation
 - Copy this repo
+- rename to `MyPlugin` inside WordPress plugins directory
 - Get [Composer](https://getcomposer.org/)
 - run `composer install` in plugin root directory
 - 🥂
