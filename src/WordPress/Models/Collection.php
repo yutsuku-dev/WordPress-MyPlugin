@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Yutsuku\WordPress\Models;
 
-abstract class Collection implements \Iterator
+abstract class Collection implements \Iterator, \Countable
 {
-    private $elements = [];
-    private $position = 0;
+    protected $elements = [];
+    protected $position = 0;
 
     public function __construct()
     {
@@ -37,5 +37,10 @@ abstract class Collection implements \Iterator
     public function valid()
     {
         return isset($this->elements[$this->position]);
+    }
+
+    public function count(): int
+    {
+        return count($this->elements);
     }
 }

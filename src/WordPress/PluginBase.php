@@ -19,13 +19,13 @@ abstract class PluginBase
         $this->pluginRootFile = $pluginRootFile;
     }
 
-    protected function build()
+    public function build(): void
     {
         $this->fetcher = Fetcher\Factory::build();
         $this->usersController = new Api\UsersController($this->fetcher);
     }
 
-    protected function enable()
+    public function enable(): void
     {
         register_activation_hook(__FILE__, static function () {
             add_rewrite_endpoint(Slug::NAME, EP_ROOT);
@@ -33,11 +33,11 @@ abstract class PluginBase
         });
     }
 
-    protected function disable()
+    public function disable(): void
     {
     }
 
-    protected function populateMetadata()
+    public function populateMetadata(): void
     {
         $this->metadata = get_file_data($this->pluginRootFile, [
             'Plugin Name' => 'Plugin Name',
@@ -57,17 +57,17 @@ abstract class PluginBase
         ]);
     }
 
-    protected function metadataHandle(): string
+    public function metadataHandle(): string
     {
         return $this->metadata['Plugin Name'] ?? __NAMESPACE__;
     }
 
-    protected function metadataVersion(): string
+    public function metadataVersion(): string
     {
         return $this->metadata['Version'] ?? '1.0';
     }
 
-    protected function resourceJsPath(): string
+    public function resourceJsPath(): string
     {
         $file = get_template_directory() .
             $this->userTemplateBasedir .
@@ -88,7 +88,7 @@ abstract class PluginBase
             'src/templates/js/main.js';
     }
 
-    protected function resourceCssPath(): string
+    public function resourceCssPath(): string
     {
         $file = get_template_directory() .
             $this->userTemplateBasedir .
@@ -109,7 +109,7 @@ abstract class PluginBase
             'src/templates/css/main.css';
     }
 
-    protected function resourceTemplatePath(): string
+    public function resourceTemplatePath(): string
     {
         $template = locate_template($this->userTemplateBasedir . '/index.php');
 
@@ -120,7 +120,27 @@ abstract class PluginBase
         return $template;
     }
 
-    protected function addActions()
+    public function enqueueResources(): void
+    {
+        add_action('wp_enqueue_scripts', function () {
+            wp_enqueue_script(
+                $this->metadataHandle(),
+                $this->resourceJsPath(),
+                [],
+                $this->metadataVersion(),
+                true
+            );
+            wp_enqueue_style(
+                $this->metadataHandle(),
+                $this->resourceCssPath(),
+                [],
+                $this->metadataVersion()
+            );
+        });
+
+    }
+
+    public function addActions(): void
     {
         add_action('init', function () {
             add_rewrite_rule(
@@ -147,7 +167,7 @@ abstract class PluginBase
         });
     }
 
-    protected function addFilters()
+    public function addFilters(): void
     {
         add_filter('query_vars', static function ($vars) {
             $vars[] = rawurlencode(Slug::NAME);
@@ -170,27 +190,13 @@ abstract class PluginBase
                 return $template;
             }
 
-            add_action('wp_enqueue_scripts', function () {
-                wp_enqueue_script(
-                    $this->metadataHandle(),
-                    $this->resourceJsPath(),
-                    [],
-                    $this->metadataVersion(),
-                    true
-                );
-                wp_enqueue_style(
-                    $this->metadataHandle(),
-                    $this->resourceCssPath(),
-                    [],
-                    $this->metadataVersion()
-                );
-            });
+            $this->enqueueResources();
 
             return $this->resourceTemplatePath();
         });
     }
 
-    public function init()
+    public function init(): void
     {
         $this->populateMetadata();
         $this->build();

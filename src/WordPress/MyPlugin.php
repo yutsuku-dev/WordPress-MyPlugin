@@ -9,6 +9,5 @@ class MyPlugin extends PluginBase
     public function __construct(string $pluginRootFile)
     {
         $this->pluginRootFile = $pluginRootFile;
-        $this->init();
     }
 }

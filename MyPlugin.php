@@ -24,3 +24,4 @@ require plugin_dir_path(__FILE__) . 'vendor/autoload.php';
 use Yutsuku\WordPress\MyPlugin;
 
 $plugin = new MyPlugin(__FILE__);
+$plugin->init();

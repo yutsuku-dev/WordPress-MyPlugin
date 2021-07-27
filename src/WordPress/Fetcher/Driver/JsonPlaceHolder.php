@@ -23,6 +23,7 @@ use Yutsuku\WordPress\Models\JsonPlaceHolder\Todos;
 use Yutsuku\WordPress\Models\JsonPlaceHolder\TodosInterface;
 use Yutsuku\WordPress\Models\JsonPlaceHolder\User;
 use Yutsuku\WordPress\Models\JsonPlaceHolder\Users;
+use Yutsuku\WordPress\Models\JsonPlaceHolder\UsersInterface;
 
 class JsonPlaceHolder implements FetcherInterface, JsonPlaceHolderUserInterface
 {
@@ -31,10 +32,10 @@ class JsonPlaceHolder implements FetcherInterface, JsonPlaceHolderUserInterface
     private ClientInterface $httpClient;
     private RequestFactoryInterface $requestFactory;
     private TransientInterface $cache;
-    private Users $usersCollection;
+    private UsersInterface $usersCollection;
     private bool $cached = true;
 
-    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, TransientInterface $cache, Users $usersCollection)
+    public function __construct(ClientInterface $httpClient, RequestFactoryInterface $requestFactory, TransientInterface $cache, UsersInterface $usersCollection)
     {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
