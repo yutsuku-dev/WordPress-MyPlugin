@@ -11,7 +11,10 @@ abstract class PluginBase
     protected string $pluginRootFile;
     /** @see https://developer.wordpress.org/reference/functions/get_plugin_data/ */
     protected array $metadata;
-    /** where from user-provided files will be loaded, if any. Defaults to `Yutsuku/WordPress/MyPlugin` */
+    /**
+     * Where from user-provided files will be loaded, if any.
+     * Defaults to `Yutsuku/WordPress/MyPlugin`
+     */
     protected string $userTemplateBasedir = 'Yutsuku/WordPress/MyPlugin';
 
     public function __construct(string $pluginRootFile)
@@ -73,7 +76,10 @@ abstract class PluginBase
             $this->userTemplateBasedir .
             '/js/main.js';
 
-        set_error_handler(function () {
+        // It's either this or error control operator (@)
+        // Second one is more troublesome to debug
+        // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
+        set_error_handler(static function () {
         });
 
         if (file_exists($file)) {
@@ -94,7 +100,10 @@ abstract class PluginBase
             $this->userTemplateBasedir .
             '/css/main.css';
 
-        set_error_handler(function () {
+        // It's either this or error control operator (@)
+        // Second one is more troublesome to debug
+        // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
+        set_error_handler(static function () {
         });
 
         if (file_exists($file)) {
@@ -137,7 +146,6 @@ abstract class PluginBase
                 $this->metadataVersion()
             );
         });
-
     }
 
     public function addActions(): void
