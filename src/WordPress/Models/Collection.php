@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yutsuku\WordPress\Models;
 
-abstract class Collection implements \Iterator, \Countable
+abstract class Collection implements \Iterator, \Countable, \JsonSerializable
 {
     protected $elements = [];
     protected $position = 0;
@@ -42,5 +42,10 @@ abstract class Collection implements \Iterator, \Countable
     public function count(): int
     {
         return count($this->elements);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->elements;
     }
 }

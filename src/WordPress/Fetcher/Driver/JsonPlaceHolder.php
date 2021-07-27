@@ -73,6 +73,7 @@ class JsonPlaceHolder implements FetcherInterface, JsonPlaceHolderUserInterface
 
             return $data;
         } catch (ClientExceptionInterface $exception) {
+            return null;
         }
     }
 
@@ -88,6 +89,8 @@ class JsonPlaceHolder implements FetcherInterface, JsonPlaceHolderUserInterface
         if ($data) {
             return User::fromArray($data);
         }
+
+        return null;
     }
 
     public function fetchAll(): void

@@ -23,7 +23,7 @@ class Transient implements TransientInterface
             throw new TransientException('Key must be 172 characters or fewer in length');
         }
 
-        set_transient($key, $data, $context);
+        set_transient($key, $data, $context, $this->expiries());
     }
 
     public function fetch(string $key): ?array

@@ -38,6 +38,11 @@ class MyPlugin {
      */
     async user(id) {
         const response = await fetch(this.endpoint + '/' + id);
+
+        if (!response.ok) {
+            return null;
+        }
+
         const data = await response.json();
 
         return data;
@@ -67,6 +72,32 @@ class MyPlugin {
             }).join('')}
         </table>
         `;
+    }
+
+    /**
+     * @returns {String}
+     */
+    template_error(details) {
+        return `
+            <div data-myplugin-error>
+                <h3>Looks like there was an error :(</h3>
+                <h4>${details}</h4>
+            </div>
+        `;
+    }
+
+    /**
+     * @returns {String}
+     */
+    template_error_users() {
+        return this.template_error('There are no users or we failed fetching them');
+    }
+
+    /**
+     * @returns {String}
+     */
+    template_error_user() {
+        return this.template_error('This user does not exist or we failed to load data for that user');
     }
 
     /**
@@ -105,7 +136,13 @@ class MyPlugin {
 
     async render_users() {
         const users = await this.users();
-        this.view.innerHTML = this.template_users(users.elements);
+
+        if (!users || users.length === 0) {
+            this.view.innerHTML = this.template_error_users();
+            return;
+        }
+
+        this.view.innerHTML = this.template_users(users);
         this.bindUsersLinks(this.view);
     }
 
@@ -131,6 +168,12 @@ class MyPlugin {
         const result = window.location.pathname.match(`${this.slug}(?<id>[0-9]+)`);
         if (result?.groups?.id) {
             const user = await this.user(result.groups.id);
+
+            if (!user) {
+                this.viewDetails.innerHTML = this.template_error_user();
+                return;
+            }
+
             this.markActiveRow(result.groups.id);
             this.render_user(user);
         }

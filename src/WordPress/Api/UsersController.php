@@ -46,6 +46,11 @@ class UsersController
     {
         $id = (int) $request->get_param('id');
         $user = $this->fetcher->user($id);
+
+        if (!$user) {
+            return new \WP_REST_Response(null, 404);
+        }
+
         $userDetails = $this->fetcher->userDetails($user);
 
         $data = ['user' => $user, 'details' => $userDetails];
